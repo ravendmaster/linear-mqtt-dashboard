@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">Linear MQTT Dashboard</string>
+    <string name="server">Server (\'tcp://\', \'ssl://\' or \'tls://\' prefixes available)</string>
+    <string name="port">Port</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-5722465293744437/4245475504</string>
+    <string name="keep_connection_in_the_background_for_receiving_push_notifications">Keep connection in the background for receiving push notifications</string>
+    <string name="server_topic">Server topic</string>
+    <string name="push_notifications_subscribe_topic">Push notifications subscribe topic</string>
+    <string name="network_status">Network</string>
+    <string name="mqtt_status" translatable="false">MQTT</string>
+    <string name="tab_names">Tab names</string>
+    <string name="if_the_name_is_not_specified_then_the_tab_is_not_visible">If the name is not specified, then the tab is not visible.</string>
+    <string name="decimal_mode">Decimal mode</string>
+    <string name="widget_type">Widget type</string>
+    <string name="widget_name">Name</string>
+    <string name="topic">Topic</string>
+    <string name="retained">Retained</string>
+    <string name="topic_for_send_new_value">Topic for send new value (long tap on value field in \'Play\' mode)</string>
+    <string name="primary_color">Primary color</string>
+    <string name="input_new_value">input new value</string>
+    <string name="on_label">\'On\' label</string>
+    <string name="off_label">\'Off\' label</string>
+    <string name="connection_settings_to_the_mqtt_server">Connection settings to the MQTT server</string>
+
+    <string name="value_on">\'On\' value</string>
+    <string name="value_off">\'Off\' value (optional)</string>
+    <string name="range_from">Rage from</string>
+    <string name="range_to">to</string>
+    <string name="step">step</string>
+    <string name="alarm_zone_lower">Alarm zone, lower(%)</string>
+    <string name="alarm_zone_upper">Alarm zone, upper(%)</string>
+    <string name="widget_type_value">Value</string>
+    <string name="widget_type_switch">Switch</string>
+    <string name="widget_type_button">Button</string>
+    <string name="widget_type_rgb_led">RGB LED</string>
+    <string name="widget_type_slider">Slider</string>
+    <string name="widget_type_header">Header</string>
+    <string name="widget_type_meter">Meter</string>
+    <string name="widget_mode">Mode</string>
+    <string name="server_mode">Application server mode</string>
+</resources>

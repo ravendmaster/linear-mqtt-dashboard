@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#E0E0E0"
+        android:orientation="horizontal"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp">
+
+        <TextView
+            android:id="@+id/textView_text_connection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingRight="4dp"
+            android:text="@string/network_status"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="14sp" />
+
+        <com.ravendmaster.linearmqttdashboard.customview.RGBLEDView
+            android:id="@+id/connection_status_RGBLed"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            ads:size="64"
+            ads:isOn="true"
+            android:layout_gravity="center_vertical"
+            ads:enabled="true" />
+
+
+        <TextView
+            android:id="@+id/textView_text_mqtt_broker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="4dp"
+            android:text="@string/mqtt_status"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="14sp" />
+
+        <com.ravendmaster.linearmqttdashboard.customview.RGBLEDView
+            android:id="@+id/mqtt_broker_status_RGBLed"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            ads:size="64"
+            ads:isOn="true"
+            android:layout_gravity="center_vertical"
+            ads:enabled="true" />
+
+    </LinearLayout>
+
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/linearLayout"
+        android:layout_above="@+id/my_tabs_controller">
+    </FrameLayout>
+
+
+
+    <com.ravendmaster.linearmqttdashboard.customview.MyTabsController
+        android:id="@+id/my_tabs_controller"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="center_vertical"
+        android:visibility="visible"
+        android:layout_above="@+id/ad_view" />
+
+
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/ad_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true" />
+
+
+</RelativeLayout>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        div {
+        padding: 10px;
+        background-color: yellow;
+        box-shadow: 4px 4px 2px grey;
+        }
+    </style>
+</head>
+<body>
+
+<b>Notifier</b>
+<hr>
+<p>A JavaScript interface through which you can send push notifications. It is recommended to use only in the event of OnReceive()</p>
+Example:<br>
+<div>
+    if(value>100)Notifier.push("Alarm!!!");
+    if(value<90)Notifier.stop();
+</div>
+
+<p><font color="red">Please note, you must call the stop() method in the same script of the widget, otherwise the message will come every time when you start the application. Also make sure that before removing the widget from the dashboard, last was caused by Notifier.stop()</font></p>
+
+<hr>
+See also: <a href="help_onreceive.html">OnReceive</a>
+
+
+</body>
+</html>

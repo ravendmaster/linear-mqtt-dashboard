@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        div {
+        padding: 10px;
+        background-color: yellow;
+        box-shadow: 4px 4px 2px grey;
+        }
+    </style>
+</head>
+<body>
+
+<b>Application server mode</b>
+<hr>
+<p>Application mode allows you to continuously process the MQTT messages by using JavaScript events in OnReceive() of widgets, even when app is not active. Also, this mode is necessary to prepare data for charting, working in the mode history (1h, 4h etc.) to other application instances having the same parameters for connecting to the MQTT server.</p>
+
+<p><font color="red">When the application is running in this mode will experience high energy consumption and network traffic.</font></p>
+<p><font color="red">This mode should only work on one instance of those who have the same settings, connect to the MQTT server.</font></p>
+
+<p>In the setting "Server topic" you need to specify an arbitrary path through a topic which will be the exchange between "server" and "clients". This setting must contain the same value in all instances of the application.</p>
+Example:<br>
+<div>
+    myhome/server;
+</div>
+
+<hr>
+See also: <a href="help_onreceive.html">OnReceive()</a>
+
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.MainActivity">
+
+
+    <item
+        android:id="@+id/auto_create_widgets"
+        android:icon="@drawable/auto_create_widgets"
+        android:title="Auto-create widgets"
+        android:visible="true"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/Add_new_widget"
+        android:icon="@drawable/ic_plus"
+        android:title="Add new widget"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/Edit_play_mode"
+        android:checkable="true"
+        android:icon="@drawable/ic_pause"
+        android:title="PLAY/EDIT"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/Save_dashboard"
+        android:title="Save dashboard"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/Load_dashboard"
+        android:title="Load dashboard"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/Init_default_dashboard"
+        android:title="Load demo dashboard"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/Init_myhome_dashboard"
+        android:title="Load my home dashboard"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/Clean_dashboard"
+        android:title="Clean dashboard"
+        android:visible="false"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/simple_mode"
+        android:checkable="true"
+        android:title="Simple mode"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/compact_mode"
+        android:checkable="true"
+        android:title="Compact mode"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/connection_settings"
+        android:icon="@drawable/ic_connect"
+        android:title="App settings..."
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/tabs"
+        android:icon="@drawable/ic_connect"
+        android:title="Tabs..."
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/start_service"
+        android:title="Start service"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/stop_service"
+        android:title="Stop service"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/subscribe"
+        android:title="Subscribe"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/import_settings"
+        android:title="Import settings..."
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/request_prices"
+        android:title="Request prices"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/donate"
+        android:title="Donate..."
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/check_buyed"
+        android:title="Restore purchases"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/clear_buys"
+        android:title="Clear buys"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/disable_ads"
+        android:title="Disable ads"
+        android:visible="false"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/share_settings"
+        android:title="Share settings..."
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/action_lists"
+        android:title="action_lists"
+        android:visible="false"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_board"
+        android:title="action_board"
+        android:visible="false"
+        app:showAsAction="never" />
+
+</menu>

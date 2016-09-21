@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/widget_edit"
+        android:title="Edit..." />
+
+    <item
+        android:id="@+id/widget_copy"
+        android:title="Copy..." />
+
+    <item
+        android:id="@+id/widget_remove"
+        android:title="Remove" />
+
+    <item
+        android:id="@+id/widget_move"
+        android:title="Move to..." />
+
+
+</menu>

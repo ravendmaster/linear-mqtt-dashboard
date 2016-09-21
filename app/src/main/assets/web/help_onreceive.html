@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        div {
+        padding: 10px;
+        background-color: yellow;
+        box-shadow: 4px 4px 2px grey;
+        }
+    </style>
+</head>
+<body>
+
+<b>OnReceive()</b>
+<hr>
+<p><font color="red">This event occurs only in "Application server mode"</font></p>
+<p>JavaScript code is executed whenever the application receives a new payload for the current topic.</p>
+<p>Payload in the script is available via the variable 'value'.</p>
+Example:<br>
+<div>
+if(value>29)Notifier.push('Too hot!');<br>
+if(value<26)Notifier.stop();<br>
+</div>
+
+<hr>
+See also: <a href="help_onshow.html">OnShow()</a>, <a href="help_notifier.html">Notifier</a>, <a href="help_application_server_mode.html">Application server mode</a>
+
+
+</body>
+</html>

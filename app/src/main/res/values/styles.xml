@@ -1,0 +1,26 @@
+<resources>
+
+    <style name="MyTheme" parent="MyTheme.Base">
+    </style>
+
+    <!-- Base theme applied no matter what API -->
+    <style name="MyTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- colorPrimary is used for the default action bar background -->
+        <item name="colorPrimary">#a159ff</item>
+        <!-- colorPrimaryDark is used for the status bar -->
+        <item name="colorPrimaryDark">#7e1aff</item>
+        <!-- colorAccent is used as the default value for colorControlActivated
+             which is used to tint widgets -->
+        <item name="colorAccent">#95009f</item>
+        <!-- You can also set colorControlNormal, colorControlActivated
+            colorControlHighlight and colorSwitchThumbNormal. -->
+    </style>
+
+    <style name="SpinnerDefaultTheme" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:textColor">#F8F7F6</item>
+        <item name="android:cacheColorHint">#414141</item>
+        <item name="android:divider">#2B2B2B</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
+</resources>
