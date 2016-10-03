@@ -18,15 +18,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.ravendmaster.linearmqttdashboard.BuildConfig;
 import com.ravendmaster.linearmqttdashboard.Utilites;
 import com.ravendmaster.linearmqttdashboard.customview.Graph;
@@ -120,10 +111,6 @@ public class MQTTService extends Service implements CallbackMQTTClient.IMQTTMess
     public int activeTabIndex = 0;
     public int screenActiveTabIndex = 0;
 
-    private FirebaseDatabase database;
-    private FirebaseAuth mAuth;
-    private FirebaseRemoteConfig mFirebaseRemoteConfig;
-
     private static final String FULL_VERSION_FOR_ALL = "full_version_for_all";
     private static final String MESSAGE_TITLE = "message_title";
     private static final String MESSAGE_TEXT = "message_text";
@@ -140,10 +127,6 @@ public class MQTTService extends Service implements CallbackMQTTClient.IMQTTMess
         }
     }
 
-    public long getAdFrequency() {
-        return mFirebaseRemoteConfig.getLong(AD_FREQUENCY);
-    }
-
     public String getMQTTCurrentValue(String topic) {
         if (getCurrentMQTTValues() == null) return "";
 
@@ -152,110 +135,9 @@ public class MQTTService extends Service implements CallbackMQTTClient.IMQTTMess
         return value == null ? "" : value;
     }
 
-    public long getRebuildHistoryDataFrequency() {
-        if (mFirebaseRemoteConfig == null) return 60;//может быть вызвана до инициализации
-        return mFirebaseRemoteConfig.getLong(REBUILD_HISTORY_DATA_FREQUENCY);
-    }
-
     String lastMessageText = "";
 
-    public PopUpMessage messageForAll() {
-        if (!mFirebaseRemoteConfig.getBoolean(FULL_VERSION_FOR_ALL)) return null;
-        AppSettings appSettings = AppSettings.getInstance();
-        if (appSettings.adfree) return null;
-
-        String message_text = mFirebaseRemoteConfig.getString(MESSAGE_TEXT);
-
-        if (message_text.isEmpty()) return null;
-        if (lastMessageText.equals(message_text)) return null;
-
-        lastMessageText = message_text;
-        return new PopUpMessage(mFirebaseRemoteConfig.getString(MESSAGE_TITLE), message_text);
-    }
-
-    public boolean isAdfree() {
-        if (mFirebaseRemoteConfig.getBoolean(FULL_VERSION_FOR_ALL)) return true;
-
-        AppSettings appSettings = AppSettings.getInstance();
-        return appSettings.adfree;
-
-    }
-
-    private void fetchRemoteConfig() {
-
-        long cacheExpiration = 3600; // 1 hour in seconds.
-        // If in developer mode cacheExpiration is set to 0 so each fetch will retrieve values from
-        // the server.
-        if (mFirebaseRemoteConfig.getInfo().getConfigSettings().isDeveloperModeEnabled()) {
-            cacheExpiration = 0;
-        }
-
-        // [START fetch_config_with_callback]
-        // cacheExpirationSeconds is set to cacheExpiration here, indicating that any previously
-        // fetched and cached config would be considered expired because it would have been fetched
-        // more than cacheExpiration seconds ago. Thus the next fetch would go to the server unless
-        // throttling is in progress. The default expiration duration is 43200 (12 hours).
-        mFirebaseRemoteConfig.fetch(cacheExpiration)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            //Log.d(getClass().getName(), "Fetch Succeeded");
-                            // Once the config is successfully fetched it must be activated before newly fetched
-                            // values are returned.
-                            mFirebaseRemoteConfig.activateFetched();
-                        } else {
-                            //Log.d(getClass().getName(), "Fetch failed");
-                        }
-
-                        //displayPrice();
-                    }
-                });
-        // [END fetch_config_with_callback]
-    }
-
-
     public void OnCreate(AppCompatActivity appCompatActivity) {
-        //take statistic
-        database = FirebaseDatabase.getInstance();
-
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInAnonymously()
-                .addOnCompleteListener(appCompatActivity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        //Log.d("TAG", "signInAnonymously:onComplete:" + task.isSuccessful());
-                        DatabaseReference myRef = database.getReference("users");
-                        Date d = new Date();
-                        SimpleDateFormat format1 = new SimpleDateFormat("dd.MM.yyyy hh:mm");
-
-                        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                        if (firebaseUser != null) {
-                            myRef.child(firebaseUser.getUid()).child("last_start").setValue(format1.format(d).toString());
-                        }
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            //Log.w("TAG", "signInAnonymously", task.getException());
-                            //Toast.makeText(AnonymousAuthActivity.this, "Authentication failed.",
-                            //        Toast.LENGTH_SHORT).show();
-                        }
-
-                        // ...
-                    }
-                });
-
-        //remote config
-        mFirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
-        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(BuildConfig.DEBUG)
-                .build();
-        mFirebaseRemoteConfig.setConfigSettings(configSettings);
-        mFirebaseRemoteConfig.setDefaults(R.xml.remote_config_defaults);
-        fetchRemoteConfig();
-
 
         Context context = getApplicationContext();
         AppSettings appSettings = AppSettings.getInstance();
@@ -566,7 +448,7 @@ public class MQTTService extends Service implements CallbackMQTTClient.IMQTTMess
                     }
 
                     try {
-                        Thread.sleep(getRebuildHistoryDataFrequency() * 1000);
+                        Thread.sleep(60 * 1000);
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();

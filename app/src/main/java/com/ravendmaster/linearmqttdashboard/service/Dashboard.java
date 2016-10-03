@@ -333,9 +333,7 @@ public class Dashboard {
 
     void initDemoDashboard() {
 
-
         mWidgets.clear();
-        //mWidgets.add(new WidgetData(WidgetData.WidgetTypes.BUTTON, "Demo server fake alarm!", "out/wcs/push_notifications", "", "Demo server fake alarm!", 0));
         mWidgets.add(new WidgetData(WidgetData.WidgetTypes.HEADER, "Value example", "", "", "", 0, ""));
         mWidgets.add(new WidgetData(WidgetData.WidgetTypes.VALUE, "Server time (Value)", "out/wcs/time", "", "", MyColors.getAsBlack(), ""));
 

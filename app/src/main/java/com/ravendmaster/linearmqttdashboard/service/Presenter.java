@@ -43,11 +43,11 @@ public class Presenter {
         String file = "";
         if (helpView == activity.findViewById(R.id.help_onreceive)) {
             file = "help_onreceive.html";
-        }else if (helpView == activity.findViewById(R.id.help_onshow)) {
+        } else if (helpView == activity.findViewById(R.id.help_onshow)) {
             file = "help_onshow.html";
-        }else if (helpView == activity.findViewById(R.id.help_push_topic)) {
+        } else if (helpView == activity.findViewById(R.id.help_push_topic)) {
             file = "help_push_topic.html";
-        }else if (helpView == activity.findViewById(R.id.help_application_server_mode)) {
+        } else if (helpView == activity.findViewById(R.id.help_application_server_mode)) {
             file = "help_application_server_mode.html";
         }
 
@@ -157,8 +157,6 @@ public class Presenter {
 
         void onTabSelected();
 
-        void showAd();
-
         void showPopUpMessage(String title, String text);
     }
 
@@ -237,16 +235,6 @@ public class Presenter {
 
     }
 
-    //long timeShowAd;
-
-    public void showAd() {
-        if (isAdfree()) return;
-        if (System.currentTimeMillis() - mqttService.timeShowAd > mqttService.getAdFrequency() * 1000) {
-            mqttService.timeShowAd = System.currentTimeMillis();
-            view.showAd();
-        }
-    }
-
     public void onTabPressed(int screenIndex) {
         if (screenIndex == -1) {
             screenIndex = mqttService.screenActiveTabIndex;
@@ -258,7 +246,6 @@ public class Presenter {
 
         mqttService.screenActiveTabIndex = screenIndex;
         view.onTabSelected();
-        showAd();
     }
 
 
@@ -266,16 +253,8 @@ public class Presenter {
         if (mqttService == null) return;
         mqttService.OnCreate(appCompatActivity);
 
-        String title = "";
-        String text = "";
-        MQTTService.PopUpMessage msg = mqttService.messageForAll();
-        if (msg != null) {
-            view.showPopUpMessage(msg.title, msg.text);
-        }
-
         mDelayedPublishValueHandler = new Handler() {
             public void handleMessage(android.os.Message msg) {
-
                 SendMessagePack sendMsgPack = (SendMessagePack) msg.obj;
                 publishMQTTMessage(sendMsgPack.topic, new Buffer(sendMsgPack.value.getBytes()), sendMsgPack.retained);
             }
@@ -591,7 +570,6 @@ public class Presenter {
         handlerNeedRefreshDashboard.removeMessages(0);
         interactiveMode = true;
         WidgetData widget = (WidgetData) button.getTag();
-        //mInteractiveWidgetData=widget;
 
         if (!widget.publishValue.equals("")) {
             widget.noUpdate = true;
@@ -629,10 +607,6 @@ public class Presenter {
     }
     //switch
 
-    public void subscribe() {
-        mqttService.subscribeForState(MQTTService.STATE_FULL_CONNECTED);
-    }
-
     //long click on value
     WidgetData widgetDataOfNewValueSender;
 
@@ -660,18 +634,6 @@ public class Presenter {
         publishMQTTMessage(widgetDataOfNewValueSender.topics[0], new Buffer(newValue.getBytes()), widgetDataOfNewValueSender.retained);
     }
 
-
-    public boolean isAdfree() {
-        return true;
-    }
-
-    public void doAdfree(Context context, boolean mode) {
-        AppSettings appSettings = AppSettings.getInstance();
-        appSettings.adfree = mode;
-        appSettings.saveConnectionSettingsToPrefs(context);
-    }
-
     public void onMainMenuItemSelected() {
-        showAd();
     }
 }

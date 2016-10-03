@@ -13,20 +13,20 @@ public class WidgetData {
 
     public boolean noUpdate = false;
 
-    public String getTopicSuffix(){
+    public String getTopicSuffix() {
 
-        if (type == WidgetData.WidgetTypes.GRAPH && mode >= Graph.PERIOD_TYPE_1_HOUR ) {
+        if (type == WidgetData.WidgetTypes.GRAPH && mode >= Graph.PERIOD_TYPE_1_HOUR) {
             return Graph.HISTORY_TOPIC_SUFFIX;
         }
 
-        if (type == WidgetData.WidgetTypes.GRAPH && mode == Graph.LIVE ) {
+        if (type == WidgetData.WidgetTypes.GRAPH && mode == Graph.LIVE) {
             return Graph.LIVE_TOPIC_SUFFIX;
         }
 
         return "";
     }
 
-    public final static String[] Value_modes={"Any", "Numbers"};
+    public final static String[] Value_modes = {"Any", "Numbers"};
 
     public static String[] getWidgetModes(WidgetTypes type) {
 
@@ -147,10 +147,10 @@ public class WidgetData {
 
     String[] topics = new String[4];
 
-    public UUID uid=UUID.randomUUID();
+    public UUID uid = UUID.randomUUID();
 
     public String getTopic(int index) {
-        if(topics[index]==null)return "";
+        if (topics[index] == null) return "";
         return topics[index];
     }
 
@@ -183,7 +183,7 @@ public class WidgetData {
 
     public boolean decimalMode = false;
 
-    public int mode = 0; //например режим отображения Meter (3 шт)
+    public int mode = 0;
     public int submode = 0;
 
     public String formatMode = "";
@@ -225,7 +225,7 @@ public class WidgetData {
 
         this.mode = 0;
 
-        this.formatMode = ""; //количество кнопок в buttons set
+        this.formatMode = "";
     }
 
     public WidgetData(WidgetTypes type, String name, String topic, String publishValue, String publishValue2, int primaryColor, String label, String label2, boolean retained) {

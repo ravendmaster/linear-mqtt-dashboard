@@ -39,12 +39,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.vending.billing.IInAppBillingService;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
 import com.ravendmaster.linearmqttdashboard.BoardFragment;
 import com.ravendmaster.linearmqttdashboard.ListFragment;
 import com.ravendmaster.linearmqttdashboard.Log;
@@ -92,12 +86,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
     public static DisplayMetrics mDisplayMetrics;
 
-    private AdView mAdView;
-    private InterstitialAd mInterstitialAd;
-
-    //DragListView mDragListView;
-    //ListAdapter mListAdapter;
-
     MyTabsController tabsController;
 
     public final int ConnectionSettings_CHANGE = 0;
@@ -113,22 +101,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     RGBLEDView connectionStatusRGBLEDView;
 
     Menu optionsMenu;
-
-
-    IInAppBillingService mService;
-
-    ServiceConnection mServiceConn = new ServiceConnection() {
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mService = null;
-        }
-
-        @Override
-        public void onServiceConnected(ComponentName name,
-                                       IBinder service) {
-            mService = IInAppBillingService.Stub.asInterface(service);
-        }
-    };
 
     @Override
     public boolean onLongClick(View view) {
@@ -181,17 +153,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (appSettings.server == null) return true;
         if (appSettings.server.equals("ravend.asuscomm.com")) {
             optionsMenu.findItem(R.id.request_prices).setVisible(true);
-            optionsMenu.findItem(R.id.clear_buys).setVisible(true);
-            optionsMenu.findItem(R.id.disable_ads).setVisible(true);
-
             optionsMenu.findItem(R.id.action_board).setVisible(true);
             optionsMenu.findItem(R.id.action_lists).setVisible(true);
         }
 
-        optionsMenu.findItem(R.id.donate).setVisible(true);
-
         getDashboardViewMode();
-        doRefreshMenu();
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -205,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
         if (presenter.isEditMode()) {
             menuItemPlayPause.setIcon(R.drawable.ic_play);
-            menuItemAutoCreateWidgets.setVisible( presenter.getUnusedTopics().length>0 );
+            menuItemAutoCreateWidgets.setVisible(presenter.getUnusedTopics().length > 0);
 
         } else {
             menuItemPlayPause.setIcon(R.drawable.ic_pause);
@@ -216,23 +182,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         menuItem_clear_dashboard.setVisible(presenter.isEditMode());
 
     }
-
-    void doRefreshMenu() {
-        if (mDashboardViewMode != null) {
-            switch (mDashboardViewMode) {
-                case SIMPLE:
-                    optionsMenu.findItem(R.id.simple_mode).setChecked(true);
-                    optionsMenu.findItem(R.id.compact_mode).setChecked(false);
-                    break;
-                case COMPACT:
-                    optionsMenu.findItem(R.id.simple_mode).setChecked(false);
-                    optionsMenu.findItem(R.id.compact_mode).setChecked(true);
-                    break;
-            }
-        }
-
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -291,14 +240,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 showDiscoveredDataDialog();
                 break;
 
-            case R.id.Save_dashboard:
-                presenter.saveActiveDashboard(getApplicationContext(), presenter.getActiveDashboardId());
-                break;
-            case R.id.Init_default_dashboard:
-                presenter.initDemoDashboard();
-                refreshDashboard(true);
-                presenter.saveActiveDashboard(this, presenter.getActiveDashboardId());
-                break;
             case R.id.connection_settings:
                 intent = new Intent(this, ConnectionSettingsActivity.class);
                 startActivityForResult(intent, ConnectionSettings_CHANGE);
@@ -308,7 +249,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 startActivityForResult(intent, Tabs);
                 break;
             case R.id.Clean_dashboard:
-
                 AlertDialog.Builder ad = new AlertDialog.Builder(this);
                 ad.setTitle("Clean dashboard");  // заголовок
                 ad.setMessage("Widgets list is cleared!"); // сообщение
@@ -327,110 +267,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 });
 
                 ad.show();
-
-
-                break;
-
-            case R.id.simple_mode:
-                mDashboardViewMode = DASHBOARD_VIEW_MODE.SIMPLE;
-                doRefreshMenu();
-                break;
-
-            case R.id.compact_mode:
-                mDashboardViewMode = DASHBOARD_VIEW_MODE.COMPACT;
-                doRefreshMenu();
-                break;
-
-
-            case R.id.start_service:
-                //restart service
-                //Intent service_intent = new Intent(this, MQTTService.class);
-                //startService(service_intent);
-                break;
-            case R.id.stop_service:
-                //service_intent = new Intent(this, MQTTService.class);
-                //stopService(service_intent);
-                break;
-
-            case R.id.subscribe:
-                presenter.subscribe();
                 break;
 
             case R.id.import_settings:
                 intent = new Intent(this, OpenFileActivity.class);
                 startActivityForResult(intent, 0);
-                break;
-
-            case R.id.request_prices:
-
-                ArrayList<String> skuList = new ArrayList<String>();
-                //skuList.add("premiumUpgrade");
-                //skuList.add("gas");
-                skuList.add("test_1");
-                skuList.add("test_2");
-                skuList.add("adfree");
-                Bundle querySkus = new Bundle();
-                querySkus.putStringArrayList("ITEM_ID_LIST", skuList);
-
-                try {
-                    Bundle skuDetails = mService.getSkuDetails(3, getPackageName(), "inapp", querySkus);
-
-                    int response = skuDetails.getInt("RESPONSE_CODE");
-                    if (response == 0) {
-                        Log.d("buy", " getSkuDetails() OK!");
-
-                        ArrayList<String> responseList = skuDetails.getStringArrayList("DETAILS_LIST");
-
-                        for (String thisResponse : responseList) {
-
-                            JSONObject object = new JSONObject(thisResponse);
-                            String sku = object.getString("productId");
-                            String price = object.getString("price");
-                            //if (sku.equals("premiumUpgrade")) mPremiumUpgradePrice = price;
-                            //else if (sku.equals("gas")) mGasPrice = price;
-                            Log.d("buy", "Sku " + sku + " price = " + price);
-                        }
-
-                    }
-
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                break;
-
-            case R.id.donate:
-                if (mService != null) {
-                    try {
-                        Bundle buyIntentBundle = mService.getBuyIntent(3, getPackageName(),
-                                "donate", "inapp", "$$K7NkCD#4My3i#0KxXI~lCXnsIff1oLLuPdBVL~");
-
-                        int response = buyIntentBundle.getInt("RESPONSE_CODE");
-                        if (response == 0) {
-
-                            PendingIntent pendingIntent = buyIntentBundle.getParcelable("BUY_INTENT");
-                            startIntentSenderForResult(pendingIntent.getIntentSender(),
-                                    1001, new Intent(), Integer.valueOf(0), Integer.valueOf(0),
-                                    Integer.valueOf(0));
-                        }
-
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    } catch (IntentSender.SendIntentException e) {
-                        e.printStackTrace();
-                    }
-                }
-                break;
-
-            case R.id.clear_buys:
-                presenter.doAdfree(this, false);
-                break;
-
-            case R.id.disable_ads:
-                presenter.doAdfree(this, true);
-                makeAdfreeNow();
-
                 break;
 
             case R.id.share_settings:
@@ -489,10 +330,10 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
 
-                                for(Object item:selectedItems){
-                                    WidgetData widgetData=new WidgetData();
-                                    widgetData.setName(0, (String)unusedTopics[(int)item]);
-                                    widgetData.setTopic(0, (String)unusedTopics[(int)item]);
+                                for (Object item : selectedItems) {
+                                    WidgetData widgetData = new WidgetData();
+                                    widgetData.setName(0, (String) unusedTopics[(int) item]);
+                                    widgetData.setTopic(0, (String) unusedTopics[(int) item]);
 
                                     presenter.addWidget(widgetData);
                                 }
@@ -659,11 +500,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     }
 
     @Override
-    public void showAd() {
-        showInterstitial();
-    }
-
-    @Override
     public void showPopUpMessage(String title, String text) {
         AlertDialog.Builder ad = new AlertDialog.Builder(this);
         ad.setTitle(title);
@@ -746,11 +582,11 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         final CharSequence[] items = new CharSequence[values.length];
         int index = 0;
         for (String value : values) {
-            String[]valueLabel=value.split("\\|");
+            String[] valueLabel = value.split("\\|");
             String label;
-            if(valueLabel.length>0) {
+            if (valueLabel.length > 0) {
                 label = valueLabel.length == 2 ? valueLabel[1] : valueLabel[0];
-            }else label="";
+            } else label = "";
 
             items[index++] = label;
         }
@@ -760,8 +596,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 .setItems(items, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
-                        String[]valueLabel=values[item].split("\\|");
-                        if(valueLabel.length==0)return;
+                        String[] valueLabel = values[item].split("\\|");
+                        if (valueLabel.length == 0) return;
                         String newValue = valueLabel[0];
                         presenter.sendComboBoxNewValue(newValue);
                     }
@@ -847,9 +683,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
     public void onPause() {
         Log.d(getClass().getName(), "onPause()");
 
-        if (mAdView != null) {
-            mAdView.pause();
-        }
         presenter.onPause();
         super.onPause();
     }
@@ -862,19 +695,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
 
         presenter.onResume(this);
         refreshTabState();
-
-
-        if (mAdView != null) {
-            mAdView.resume();
-        }
-
-
-    }
-
-    void makeAdfreeNow() {
-        ViewGroup.LayoutParams params = mAdView.getLayoutParams();
-        params.height = 0;
-        mAdView.setLayoutParams(params);
     }
 
     private void showFragment(Fragment fragment) {
@@ -924,35 +744,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         mqttBrokerStatusRGBLEDView = (RGBLEDView) findViewById(R.id.mqtt_broker_status_RGBLed);
         connectionStatusRGBLEDView = (RGBLEDView) findViewById(R.id.connection_status_RGBLed);
 
-        //banner
-        mAdView = (AdView) findViewById(R.id.ad_view);
-        if (presenter.isAdfree()) {
-            makeAdfreeNow();
-        } else {
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice("F394250231C267DE7F334073FF339307")
-                    .build();
-            mAdView.loadAd(adRequest);
-        }
-
-
-        //InterstitialAd
-        MobileAds.initialize(this, "ca-app-pub-5722465293744437~2768742309");
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-5722465293744437/1091261108");
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-            }
-        });
-        requestNewInterstitial();
-
-        //billing
-        Intent serviceIntent = new Intent("com.android.vending.billing.InAppBillingService.BIND");
-        serviceIntent.setPackage("com.android.vending");
-        bindService(serviceIntent, mServiceConn, Context.BIND_AUTO_CREATE);
-
         //import settings
         checkInputFileAndProcess();
         if (shouldAskPermission()) {
@@ -966,22 +757,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                     requestPermissions(new String[]{perms}, permsRequestCode);
                 }
             }
-        }
-    }
-
-
-    private void requestNewInterstitial() {
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice("F394250231C267DE7F334073FF339307")
-                .build();
-        mInterstitialAd.loadAd(adRequest);
-    }
-
-    private void showInterstitial() {
-        // Show the ad if it's ready. Otherwise toast and restart the game.
-        if (mInterstitialAd != null && mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
-        } else {
         }
     }
 
@@ -1093,18 +868,9 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         super.onDestroy();
         Log.d(getClass().getName(), "onDestroy()");
 
-        if (mService != null) {
-            unbindService(mServiceConn);
-        }
-
         presenter.onDestroy(this);
         saveDashboardViewMode();
 
-        try {
-            unbindService(mServiceConn);
-        } catch (Exception e) {
-
-        }
     }
 
     void saveDashboardViewMode() {

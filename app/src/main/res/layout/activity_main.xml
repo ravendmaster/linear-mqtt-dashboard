@@ -67,26 +67,15 @@
     </FrameLayout>
 
 
-
     <com.ravendmaster.linearmqttdashboard.customview.MyTabsController
         android:id="@+id/my_tabs_controller"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="center_vertical"
         android:visibility="visible"
-        android:layout_above="@+id/ad_view" />
-
-
-
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/ad_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentStart="true" />
 
 
 </RelativeLayout>

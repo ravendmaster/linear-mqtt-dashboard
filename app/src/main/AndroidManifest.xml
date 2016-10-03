@@ -50,7 +50,6 @@
         </activity>
         <activity android:name=".activity.WidgetEditorActivity" />
         <activity android:name=".activity.ConnectionSettingsActivity" />
-        <activity android:name="com.ravendmaster.nonlinearmqttdashboard.NonlinearActivity" />
 
         <service
             android:name=".service.MQTTService"
@@ -65,13 +64,6 @@
 
         <activity android:name=".activity.TabsActivity" />
         <activity android:name=".activity.OpenFileActivity" />
-
-        <service
-            android:name=".MyFirebaseMessagingService">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-            </intent-filter>
-        </service>
 
     </application>
 
