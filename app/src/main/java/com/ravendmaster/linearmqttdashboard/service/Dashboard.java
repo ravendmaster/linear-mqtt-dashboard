@@ -2,7 +2,6 @@ package com.ravendmaster.linearmqttdashboard.service;
 
 import android.content.Context;
 import android.util.JsonReader;
-import android.util.Log;
 
 import com.ravendmaster.linearmqttdashboard.Utilites;
 import com.ravendmaster.linearmqttdashboard.customview.Graph;
@@ -15,7 +14,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class Dashboard {
 
@@ -30,7 +28,7 @@ public class Dashboard {
 
     public WidgetData findWidgetByTopic(String topic) {
         for (WidgetData widgetData : getWidgetsList()) {
-            if (widgetData.getTopic(0).equals(topic)) return widgetData;
+            if (widgetData.getSubTopic(0).equals(topic)) return widgetData;
         }
         return null;
     }
@@ -59,10 +57,15 @@ public class Dashboard {
                 resultJson.put("publish", widget.publishTopic_);
                 resultJson.put("subscribe", widget.subscribeTopic_);
 
-                resultJson.put("topic", widget.getTopic(0));
-                resultJson.put("topic1", widget.getTopic(1));
-                resultJson.put("topic2", widget.getTopic(2));
-                resultJson.put("topic3", widget.getTopic(3));
+                resultJson.put("topic", widget.getSubTopic(0));
+                resultJson.put("topic1", widget.getSubTopic(1));
+                resultJson.put("topic2", widget.getSubTopic(2));
+                resultJson.put("topic3", widget.getSubTopic(3));
+
+                resultJson.put("pubTopic", widget.getPubTopic(0));
+                resultJson.put("pubTopic1", widget.getPubTopic(1));
+                resultJson.put("pubTopic2", widget.getPubTopic(2));
+                resultJson.put("pubTopic3", widget.getPubTopic(3));
 
                 resultJson.put("publishValue", widget.publishValue);
                 resultJson.put("publishValue2", widget.publishValue2);
@@ -82,7 +85,7 @@ public class Dashboard {
                     resultJson.put("label2", widget.label2);
                 }
 
-                resultJson.put("newValueTopic", widget.newValueTopic);
+                //resultJson.put("newValueTopic", widget.newValueTopic);
 
                 resultJson.put("retained", widget.retained);
 
@@ -181,22 +184,37 @@ public class Dashboard {
                             case "publishValue":
                                 widget.publishValue = jsonReader.nextString();
                                 break;
+
                             case "topic":
-                                widget.setTopic(0, jsonReader.nextString());
+                                widget.setSubTopic(0, jsonReader.nextString());
                                 break;
                             case "topic1":
-                                widget.setTopic(1, jsonReader.nextString());
+                                widget.setSubTopic(1, jsonReader.nextString());
                                 break;
                             case "topic2":
-                                widget.setTopic(2, jsonReader.nextString());
+                                widget.setSubTopic(2, jsonReader.nextString());
                                 break;
                             case "topic3":
-                                widget.setTopic(3, jsonReader.nextString());
+                                widget.setSubTopic(3, jsonReader.nextString());
                                 break;
 
-                            case "publishValue2":
+                            case "pubTopic":
+                                widget.setPubTopic(0, jsonReader.nextString());
+                                break;
+                            case "pubTopic1":
+                                widget.setPubTopic(1, jsonReader.nextString());
+                                break;
+                            case "pubTopic2":
+                                widget.setPubTopic(2, jsonReader.nextString());
+                                break;
+                            case "pubTopic3":
+                                widget.setPubTopic(3, jsonReader.nextString());
+                                break;
+
+                            case "publishValue2": //TODO: это new value?
                                 widget.publishValue2 = jsonReader.nextString();
                                 break;
+
                             case "primaryColor":
                                 widget.setPrimaryColor(0, jsonReader.nextInt());
                                 break;
@@ -219,7 +237,8 @@ public class Dashboard {
                                 widget.label2 = jsonReader.nextString();
                                 break;
                             case "newValueTopic":
-                                widget.newValueTopic = jsonReader.nextString();
+                                jsonReader.nextString(); //stub
+                                //widget.newValueTopic = jsonReader.nextString();
                                 break;
                             case "retained":
                                 widget.retained = jsonReader.nextBoolean();
@@ -260,15 +279,15 @@ public class Dashboard {
                     jsonReader.endObject();
 
                     //переход с какого-то старья
-                    if (widget.getTopic(0).equals("")) { //переходный момент
+                    if (widget.getSubTopic(0).equals("")) { //переходный момент
                         switch (widget.type) {
                             case SWITCH:
                             case BUTTON:
-                                widget.setTopic(0, widget.publishTopic_);
+                                widget.setSubTopic(0, widget.publishTopic_);
                                 break;
                             case RGBLed:
                             case VALUE:
-                                widget.setTopic(0, widget.subscribeTopic_);
+                                widget.setSubTopic(0, widget.subscribeTopic_);
                                 break;
                         }
                     }
@@ -306,7 +325,6 @@ public class Dashboard {
                     if (widget.type == WidgetData.WidgetTypes.BUTTONSSET && (widget.formatMode == null)) {
                         widget.formatMode = "4";
                     }
-
 
                     mWidgets.add(widget);
 

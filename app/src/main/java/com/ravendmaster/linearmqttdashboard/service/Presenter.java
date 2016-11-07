@@ -10,7 +10,6 @@ import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.SeekBar;
@@ -25,14 +24,12 @@ import com.ravendmaster.linearmqttdashboard.activity.MainActivity;
 import com.ravendmaster.linearmqttdashboard.customview.ButtonsSet;
 import com.ravendmaster.linearmqttdashboard.customview.MyButton;
 import com.ravendmaster.linearmqttdashboard.Utilites;
-import com.squareup.duktape.Duktape;
 
 import org.fusesource.hawtbuf.Buffer;
 
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.UUID;
 
 public class Presenter {
 
@@ -464,7 +461,7 @@ public class Presenter {
             for (WidgetData widgetData : widgetsList) {
                 boolean needNotify = false;
                 for (int i = 0; i < 4; i++) {
-                    String topic_widget = widgetData.getTopic(i);
+                    String topic_widget = widgetData.getSubTopic(i);
                     topic_widget += widgetData.getTopicSuffix();//Graph.HISTORY_TOPIC_SUFFIX;
                     if (topic_widget != null && topic_widget.equals(topic) && !widgetData.noUpdate) {
                         if ((widgetData.type == WidgetData.WidgetTypes.BUTTONSSET) && !widgetData.retained) {
@@ -509,7 +506,7 @@ public class Presenter {
         mDelayedPublishValueHandler.removeMessages(0);
 
         SendMessagePack pack = new SendMessagePack();
-        pack.topic = widget.getTopic(0);
+        pack.topic = widget.getSubTopic(0);
         pack.value = currentInteractiveValue;
         pack.retained = true;
 
@@ -565,6 +562,10 @@ public class Presenter {
     }
     //seek bar
 
+    String getTopicForPublishValue(WidgetData widget){
+        return widget.getPubTopic(0).isEmpty()?widget.getSubTopic(0):widget.getPubTopic(0);
+    }
+
     //my button
     public void onMyButtonDown(MyButton button) {
         handlerNeedRefreshDashboard.removeMessages(0);
@@ -573,7 +574,7 @@ public class Presenter {
 
         if (!widget.publishValue.equals("")) {
             widget.noUpdate = true;
-            publishMQTTMessage(widget.getTopic(0), new Buffer(widget.publishValue.getBytes()), widget.retained);
+            publishMQTTMessage(getTopicForPublishValue(widget), new Buffer(widget.publishValue.getBytes()), widget.retained);
         }
     }
 
@@ -581,7 +582,7 @@ public class Presenter {
         WidgetData widget = (WidgetData) button.getTag();
         widget.noUpdate = false;
         if (!widget.publishValue2.equals("")) {
-            publishMQTTMessage(widget.getTopic(0), new Buffer(widget.publishValue2.getBytes()), widget.retained);
+            publishMQTTMessage(getTopicForPublishValue(widget), new Buffer(widget.publishValue2.getBytes()), widget.retained);
         }
         interactiveMode = false;
         view.onRefreshDashboard();
@@ -593,7 +594,7 @@ public class Presenter {
         handlerNeedRefreshDashboard.removeMessages(0);
         WidgetData widget = (WidgetData) buttonsSet.getTag();
         if (!widget.publishValue.equals("")) {
-            publishMQTTMessage(widget.getTopic(0), new Buffer(buttonsSet.getPublishValueByButtonIndex(index).getBytes()), widget.retained);
+            publishMQTTMessage(getTopicForPublishValue(widget), new Buffer(buttonsSet.getPublishValueByButtonIndex(index).getBytes()), widget.retained);
         }
         view.onRefreshDashboard();
     }
@@ -603,7 +604,8 @@ public class Presenter {
         WidgetData widget = (WidgetData) view.getTag();
         Switch widget_switch = (Switch) view;
         String newValue = widget_switch.isChecked() ? widget.publishValue : widget.publishValue2;
-        publishMQTTMessage(widget.getTopic(0), new Buffer(newValue.getBytes()), true);
+
+        publishMQTTMessage(getTopicForPublishValue(widget), new Buffer(newValue.getBytes()), true);
     }
     //switch
 
@@ -612,7 +614,7 @@ public class Presenter {
 
     public boolean onLongClick(View v) {
         widgetDataOfNewValueSender = (WidgetData) v.getTag();
-        if (!widgetDataOfNewValueSender.newValueTopic.isEmpty()) {
+        if (!widgetDataOfNewValueSender.getPubTopic(0).isEmpty()) {
             view.onOpenValueSendMessageDialog(widgetDataOfNewValueSender);
             return true;
         } else {
@@ -622,7 +624,7 @@ public class Presenter {
 
     //new value for value widget
     public void sendMessageNewValue(String newValue) {
-        publishMQTTMessage(widgetDataOfNewValueSender.newValueTopic, new Buffer(newValue.getBytes()), false);
+        publishMQTTMessage(widgetDataOfNewValueSender.getPubTopic(0), new Buffer(newValue.getBytes()), false);
     }
 
     //combo box
@@ -631,7 +633,7 @@ public class Presenter {
     }
 
     public void sendComboBoxNewValue(String newValue) {
-        publishMQTTMessage(widgetDataOfNewValueSender.topics[0], new Buffer(newValue.getBytes()), widgetDataOfNewValueSender.retained);
+        publishMQTTMessage(widgetDataOfNewValueSender.subTopics[0], new Buffer(newValue.getBytes()), widgetDataOfNewValueSender.retained);
     }
 
     public void onMainMenuItemSelected() {

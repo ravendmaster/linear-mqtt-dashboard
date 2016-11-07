@@ -16,7 +16,7 @@
     <string name="decimal_mode">Decimal mode</string>
     <string name="widget_type">Widget type</string>
     <string name="widget_name">Name</string>
-    <string name="topic">Topic</string>
+    <string name="sub_topic">Sub.topic</string>
     <string name="retained">Retained</string>
     <string name="topic_for_send_new_value">Topic for send new value (long tap on value field in \'Play\' mode)</string>
     <string name="primary_color">Primary color</string>
@@ -41,4 +41,5 @@
     <string name="widget_type_meter">Meter</string>
     <string name="widget_mode">Mode</string>
     <string name="server_mode">Application server mode</string>
+    <string name="pub_topic">Pub.topic (optional)</string>
 </resources>

@@ -3,6 +3,7 @@ package com.ravendmaster.linearmqttdashboard;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.util.Pair;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,7 @@ public class ItemAdapter extends DragItemAdapter<Pair<Long, WidgetData>, ItemAda
 
         //TextView topicView = (TextView) convertView.findViewById(R.id.widget_topic);
         holder.mWidgetTopic.setVisibility(presenter.isEditMode() && (widget.type != WidgetData.WidgetTypes.HEADER) ? View.VISIBLE : View.GONE);
-        holder.mWidgetTopic.setText(widget.getTopic(0));
+        holder.mWidgetTopic.setText(widget.getSubTopic(0));
 
 
         holder.mWidgetMeter.setVisibility(View.GONE);
@@ -111,10 +112,10 @@ public class ItemAdapter extends DragItemAdapter<Pair<Long, WidgetData>, ItemAda
 
         String topic_suffix = widget.getTopicSuffix();
         String[] values = new String[4];
-        values[0] = presenter.getMQTTCurrentValue(widget.getTopic(0) + topic_suffix);
-        values[1] = presenter.getMQTTCurrentValue(widget.getTopic(1) + topic_suffix);
-        values[2] = presenter.getMQTTCurrentValue(widget.getTopic(2) + topic_suffix);
-        values[3] = presenter.getMQTTCurrentValue(widget.getTopic(3) + topic_suffix);
+        values[0] = presenter.getMQTTCurrentValue(widget.getSubTopic(0) + topic_suffix);
+        values[1] = presenter.getMQTTCurrentValue(widget.getSubTopic(1) + topic_suffix);
+        values[2] = presenter.getMQTTCurrentValue(widget.getSubTopic(2) + topic_suffix);
+        values[3] = presenter.getMQTTCurrentValue(widget.getSubTopic(3) + topic_suffix);
 
 
         String[]showValue = new String[4];
@@ -235,7 +236,7 @@ public class ItemAdapter extends DragItemAdapter<Pair<Long, WidgetData>, ItemAda
                 break;
             case VALUE:
                 for(int i=0;i<1;i++) {
-                    if(widget.getTopic(i).isEmpty())continue;
+                    if(widget.getSubTopic(i).isEmpty())continue;
                     valueTextView[i].setVisibility(View.VISIBLE);
                     valueTextView[i].setText(showValue[i]);
                     valueTextView[i].setTextColor(widget.getPrimaryColor(i));

@@ -64,29 +64,29 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:singleLine="true" />
+                    android:maxLines="1" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/topic_group"
+                android:id="@+id/sub_topic_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:clickable="false">
 
                 <TextView
-                    android:id="@+id/textView_topic"
+                    android:id="@+id/textView_sub_topic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/topic"
+                    android:text="@string/sub_topic"
                     android:textAppearance="?android:attr/textAppearanceSmall" />
 
                 <EditText
-                    android:id="@+id/editText_topic"
+                    android:id="@+id/editText_sub_topic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:singleLine="true"
+                    android:maxLines="1"
                     android:layout_weight="100" />
 
                 <ImageView
@@ -98,6 +98,32 @@
                     android:onClick="OnClickSelectTopicColor" />
 
             </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/pub_topic_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:clickable="false">
+
+                <TextView
+                    android:id="@+id/textView_pub_topic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/pub_topic"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <EditText
+                    android:id="@+id/editText_pub_topic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:layout_weight="100" />
+
+            </LinearLayout>
+
+
 
             <LinearLayout
                 android:id="@+id/extended_topics_group"
@@ -487,20 +513,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView_new_value_topic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="@string/topic_for_send_new_value"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                <EditText
-                    android:id="@+id/editText_new_value_topic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:singleLine="true" />
 
             </LinearLayout>
 

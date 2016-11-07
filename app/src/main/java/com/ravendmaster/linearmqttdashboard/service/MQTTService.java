@@ -13,12 +13,10 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 
-import com.ravendmaster.linearmqttdashboard.BuildConfig;
 import com.ravendmaster.linearmqttdashboard.Utilites;
 import com.ravendmaster.linearmqttdashboard.customview.Graph;
 import com.ravendmaster.linearmqttdashboard.database.DbHelper;
@@ -43,7 +41,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -51,7 +48,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.UUID;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -248,7 +244,7 @@ public class MQTTService extends Service implements CallbackMQTTClient.IMQTTMess
             for (WidgetData widgetData : dashboard.getWidgetsList()) {
                 if (widgetData.type != WidgetData.WidgetTypes.GRAPH) continue;
                 for (int i = 0; i < 4; i++) {
-                    String topic = widgetData.getTopic(i);
+                    String topic = widgetData.getSubTopic(i);
                     if (topic != null && !topic.isEmpty() && widgetData.mode >= Graph.PERIOD_TYPE_1_HOUR) {
                         graph_topics.put(topic, topic);
                     }
@@ -264,7 +260,7 @@ public class MQTTService extends Service implements CallbackMQTTClient.IMQTTMess
             for (WidgetData widgetData : dashboard.getWidgetsList()) {
                 if (widgetData.type != WidgetData.WidgetTypes.GRAPH) continue;
                 for (int i = 0; i < 4; i++) {
-                    String topic = widgetData.getTopic(i);
+                    String topic = widgetData.getSubTopic(i);
                     if (topic != null && !topic.isEmpty() && widgetData.mode == Graph.LIVE) {
                         graph_topics.put(topic, topic);
                     }
@@ -408,7 +404,7 @@ public class MQTTService extends Service implements CallbackMQTTClient.IMQTTMess
                         try {
                             final Enumeration<String> strEnum = Collections.enumeration(topicsForHistory.keySet());
                             while (strEnum.hasMoreElements()) {
-                                String topicForHistoryData = strEnum.nextElement();//widgetData.getTopic(0).substring(0, widgetData.getTopic(0).length() - 4);
+                                String topicForHistoryData = strEnum.nextElement();//widgetData.getSubTopic(0).substring(0, widgetData.getSubTopic(0).length() - 4);
                                 String historyData = prepareHistoryGraphicData(topicForHistoryData, new int[]{Graph.PERIOD_TYPE_1_HOUR, Graph.PERIOD_TYPE_4_HOUR, Graph.PERIOD_TYPE_1_DAY, Graph.PERIOD_TYPE_1_WEEK, Graph.PERIOD_TYPE_1_MOUNT});
                                 JSONObject oneTopicData = new JSONObject();
                                 oneTopicData.put("topic", topicForHistoryData + Graph.HISTORY_TOPIC_SUFFIX);
@@ -480,7 +476,7 @@ public class MQTTService extends Service implements CallbackMQTTClient.IMQTTMess
 
                         final Enumeration<String> strEnum = Collections.enumeration(topicsForLive.keySet());
                         while (strEnum.hasMoreElements()) {
-                            String topicForHistoryData = strEnum.nextElement();//widgetData.getTopic(0).substring(0, widgetData.getTopic(0).length() - 4);
+                            String topicForHistoryData = strEnum.nextElement();//widgetData.getSubTopic(0).substring(0, widgetData.getSubTopic(0).length() - 4);
                             String historyData = prepareHistoryGraphicData(topicForHistoryData, new int[]{Graph.LIVE});
                             processReceiveSimplyTopicPayloadData(topicForHistoryData + Graph.LIVE_TOPIC_SUFFIX, historyData);
                         }
@@ -652,7 +648,7 @@ public class MQTTService extends Service implements CallbackMQTTClient.IMQTTMess
             for (WidgetData widgetData : dashboard.getWidgetsList()) {
 
                 for (int i = 0; i < 4; i++) {
-                    String topic = widgetData.getTopic(i);
+                    String topic = widgetData.getSubTopic(i);
                     if (!topic.isEmpty()) {
                         if (result.indexOf(topic) == -1) {
                             result.add(topic);
@@ -1008,7 +1004,7 @@ public class MQTTService extends Service implements CallbackMQTTClient.IMQTTMess
 
         for (Dashboard dashboard : dashboards) {
             for (WidgetData widgetData : dashboard.getWidgetsList()) {
-                if (!widgetData.getTopic(0).equals(topic)) continue;
+                if (!widgetData.getSubTopic(0).equals(topic)) continue;
 
                 String code = widgetData.onReceiveExecute;
                 if (code.isEmpty()) continue;

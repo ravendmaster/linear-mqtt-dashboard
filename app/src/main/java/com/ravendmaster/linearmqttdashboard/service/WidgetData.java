@@ -140,22 +140,32 @@ public class WidgetData {
     public String subscribeTopic_;
     public String publishTopic_;
 
-    public String newValueTopic = "";
+    //public String newValueTopic = "";
 
     public String label;
     public String label2;
 
-    String[] topics = new String[4];
+    String[] subTopics = new String[4];
+    String[] pubTopics = new String[4];
 
     public UUID uid = UUID.randomUUID();
 
-    public String getTopic(int index) {
-        if (topics[index] == null) return "";
-        return topics[index];
+    public String getSubTopic(int index) {
+        if (subTopics[index] == null) return "";
+        return subTopics[index];
     }
 
-    public void setTopic(int index, String topic) {
-        topics[index] = topic;
+    public void setSubTopic(int index, String topic) {
+        subTopics[index] = topic;
+    }
+
+    public String getPubTopic(int index) {
+        if (pubTopics[index] == null) return "";
+        return pubTopics[index];
+    }
+
+    public void setPubTopic(int index, String topic) {
+        pubTopics[index] = topic;
     }
 
 
@@ -205,7 +215,7 @@ public class WidgetData {
     public WidgetData(WidgetTypes type, String name, String topic, String publishValue, String publishValue2, int primaryColor, String newValueTopic) {
         this.type = type;
         this.setName(0, name);
-        this.setTopic(0, topic);
+        this.setSubTopic(0, topic);
 
         this.publishValue = publishValue;
         this.publishValue2 = publishValue2;
@@ -214,7 +224,7 @@ public class WidgetData {
         this.label = "";
         this.label2 = "";
 
-        this.newValueTopic = newValueTopic;
+        this.pubTopics[0] = newValueTopic;
 
         this.retained = false;
 
@@ -231,7 +241,7 @@ public class WidgetData {
     public WidgetData(WidgetTypes type, String name, String topic, String publishValue, String publishValue2, int primaryColor, String label, String label2, boolean retained) {
         this.type = type;
         this.setName(0, name);
-        this.setTopic(0, topic);
+        this.setSubTopic(0, topic);
 
         this.publishValue = publishValue;
         this.publishValue2 = publishValue2;
@@ -240,7 +250,7 @@ public class WidgetData {
         this.label = label;
         this.label2 = label2;
 
-        this.newValueTopic = "";
+        this.pubTopics[0] = "";
 
         this.retained = retained;
 

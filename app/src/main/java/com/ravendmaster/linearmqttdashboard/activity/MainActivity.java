@@ -1,12 +1,7 @@
 package com.ravendmaster.linearmqttdashboard.activity;
 
-import android.app.PendingIntent;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -14,8 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import android.os.Environment;
-import android.os.IBinder;
-import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -27,7 +20,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -333,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                                 for (Object item : selectedItems) {
                                     WidgetData widgetData = new WidgetData();
                                     widgetData.setName(0, (String) unusedTopics[(int) item]);
-                                    widgetData.setTopic(0, (String) unusedTopics[(int) item]);
+                                    widgetData.setSubTopic(0, (String) unusedTopics[(int) item]);
 
                                     presenter.addWidget(widgetData);
                                 }
@@ -457,7 +449,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         alertDialogBuilder.setView(promptsView);
 
         final EditText userInput = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
-        userInput.setText(presenter.getMQTTCurrentValue(widgetData.getTopic(0)).replace("*", ""));
+        userInput.setText(presenter.getMQTTCurrentValue(widgetData.getSubTopic(0)).replace("*", ""));
 
         if (widgetData.type == WidgetData.WidgetTypes.VALUE && widgetData.mode == 1) {
             userInput.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL | EditorInfo.TYPE_NUMBER_FLAG_SIGNED);

@@ -10,8 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -37,7 +35,8 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
     WidgetData.WidgetTypes widgetType = WidgetData.WidgetTypes.VALUE;
     Integer widget_mode = 0;
 
-    LinearLayout topic_group;
+    LinearLayout sub_topic_group;
+    LinearLayout pub_topic_group;
 
     Spinner spinner_widget_mode;
 
@@ -53,7 +52,9 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
     EditText editText_name2;
     EditText editText_name3;
 
-    EditText editText_topic;
+    EditText editText_sub_topic;
+
+    EditText editText_pub_topic;
 
     View extended_topics_group;
 
@@ -77,8 +78,8 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
     TextView textView_format_mode;
     EditText editText_format_mode;
 
-    View new_value_topic_group;
-    EditText editText_new_value_topic;
+    //View new_value_topic_group;
+    //EditText editText_new_value_topic; //new value
 
     View retained_group;
     CheckBox checkBox_retained;
@@ -133,10 +134,12 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
                 widget.setName(2, editText_name2.getText().toString());
                 widget.setName(3, editText_name3.getText().toString());
 
-                widget.setTopic(0, editText_topic.getText().toString());
-                widget.setTopic(1, editText_topic1.getText().toString());
-                widget.setTopic(2, editText_topic2.getText().toString());
-                widget.setTopic(3, editText_topic3.getText().toString());
+                widget.setSubTopic(0, editText_sub_topic.getText().toString());
+                widget.setSubTopic(1, editText_topic1.getText().toString());
+                widget.setSubTopic(2, editText_topic2.getText().toString());
+                widget.setSubTopic(3, editText_topic3.getText().toString());
+
+                widget.setPubTopic(0, editText_pub_topic.getText().toString());
 
                 widget.publishValue = editText_publish_value.getText().toString();
                 widget.publishValue2 = editText_publish_value2.getText().toString();
@@ -144,7 +147,7 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
                 widget.label = editText_labelOn.getText().toString();
                 widget.label2 = editText_labelOff.getText().toString();
 
-                widget.newValueTopic = editText_new_value_topic.getText().toString();
+                //widget.newValueTopic = editText_new_value_topic.getText().toString();
 
                 widget.additionalValue = editText_additional_value.getText().toString();
                 widget.additionalValue2 = editText_additional_value2.getText().toString();
@@ -203,8 +206,13 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
         color_topic3 = ((ImageView) findViewById(R.id.color_topic3));
         color_topic3.setTag(3);//индекс топика
 
-        topic_group = (LinearLayout) findViewById(R.id.topic_group);
-        editText_topic = ((EditText) findViewById(R.id.editText_topic));
+        sub_topic_group = (LinearLayout) findViewById(R.id.sub_topic_group);
+        editText_sub_topic = ((EditText) findViewById(R.id.editText_sub_topic));
+
+        pub_topic_group = (LinearLayout) findViewById(R.id.pub_topic_group);
+
+
+        editText_pub_topic = ((EditText) findViewById(R.id.editText_pub_topic));
 
         extended_topics_group = findViewById(R.id.extended_topics_group);
         editText_topic1 = ((EditText) findViewById(R.id.editText_topic1));
@@ -227,8 +235,8 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
         textView_format_mode = ((TextView) findViewById(R.id.textView_format_mode));
         editText_format_mode = (EditText) findViewById(R.id.editText_format_mode);
 
-        new_value_topic_group = findViewById(R.id.new_value_topic_group);
-        editText_new_value_topic = (EditText) findViewById(R.id.editText_new_value_topic);
+        //new_value_topic_group = findViewById(R.id.new_value_topic_group);
+        //editText_new_value_topic = (EditText) findViewById(R.id.editText_new_value_topic);
 
         retained_group = findViewById(R.id.retained_group);
         checkBox_retained = (CheckBox) findViewById(R.id.checkBox_retained);
@@ -256,7 +264,6 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
         editText_codeOnShow = (EditText) findViewById(R.id.editText_codeOnShow);
 
         on_receive_codes_group = findViewById(R.id.on_receive_codes_group);
-        //должен быть доступ не только на сервер - on_receive_codes_group.setVisibility(AppSettings.getInstance().server_mode?View.VISIBLE:View.GONE);
         editText_codeOnReceive = (EditText) findViewById(R.id.editText_codeOnReceive);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, WidgetData.WidgetTypes.getNames(getApplicationContext()));
@@ -458,7 +465,10 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
                 additional_value2_group.setVisibility(additionalValue2Visible);
                 additional_value3_group.setVisibility(additionalValue3Visible);
 
-                topic_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER ? View.GONE : View.VISIBLE);
+
+                sub_topic_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER ? View.GONE : View.VISIBLE);
+                pub_topic_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER || widgetType == WidgetData.WidgetTypes.GRAPH || widgetType == WidgetData.WidgetTypes.RGBLed || widgetType == WidgetData.WidgetTypes.SLIDER  ? View.GONE : View.VISIBLE);
+                on_receive_codes_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER ? View.GONE : View.VISIBLE);
 
                 spinner_widget_mode.setVisibility(modeVisibility);
 
@@ -476,7 +486,7 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
 
                 labels_group.setVisibility(labelsGroupVisible);
 
-                new_value_topic_group.setVisibility(newValueTopicGroupVisible);
+                //new_value_topic_group.setVisibility(newValueTopicGroupVisible);
 
                 color_topic.setVisibility(primaryColorVisible);
                 color_topic1.setVisibility(primaryColorVisible);
@@ -534,12 +544,15 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
         topic_colors[3]=tempWidgetData.getPrimaryColor(3);
         updateScreenColorsOfTopics();
 
-        editText_topic.setText(tempWidgetData.getTopic(0));
-        editText_topic1.setText(tempWidgetData.getTopic(1));
+        editText_sub_topic.setText(tempWidgetData.getSubTopic(0));
 
-        editText_topic2.setText(tempWidgetData.getTopic(2));
+        editText_pub_topic.setText(tempWidgetData.getPubTopic(0));
 
-        editText_topic3.setText(tempWidgetData.getTopic(3));
+        editText_topic1.setText(tempWidgetData.getSubTopic(1));
+
+        editText_topic2.setText(tempWidgetData.getSubTopic(2));
+
+        editText_topic3.setText(tempWidgetData.getSubTopic(3));
 
         editText_publish_value.setText(tempWidgetData.publishValue);
         editText_publish_value2.setText(tempWidgetData.publishValue2);
@@ -547,15 +560,7 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
         editText_labelOn.setText(tempWidgetData.label);
         editText_labelOff.setText(tempWidgetData.label2);
 
-        editText_new_value_topic.setText(tempWidgetData.newValueTopic);
-
-        //primary_color_picker.
-        //
-        // (tempWidgetData.getPrimaryColor(0));
-        //editText_topic.setTextColor(tempWidgetData.getPrimaryColor(0));
-        //editText_topic1.setTextColor(tempWidgetData.getPrimaryColor(1));
-        //editText_topic2.setTextColor(tempWidgetData.getPrimaryColor(2));
-        //editText_topic3.setTextColor(tempWidgetData.getPrimaryColor(3));
+        //editText_new_value_topic.setText(tempWidgetData.newValueTopic);
 
         checkBox_retained.setChecked(tempWidgetData.retained);
 
@@ -636,7 +641,7 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
         alertDialogBuilder.setView(promptsView);
 
         final EditText userInput = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
-        //userInput.setText(presenter.getMQTTCurrentValue(widgetData.getTopic(0)).replace("*", ""));
+        //userInput.setText(presenter.getMQTTCurrentValue(widgetData.getSubTopic(0)).replace("*", ""));
         //userInput.setInputType(EditorInfo.TYPE_CLASS_NUMBER | EditorInfo.TYPE_NUMBER_FLAG_DECIMAL | EditorInfo.TYPE_NUMBER_FLAG_SIGNED);
 
 
