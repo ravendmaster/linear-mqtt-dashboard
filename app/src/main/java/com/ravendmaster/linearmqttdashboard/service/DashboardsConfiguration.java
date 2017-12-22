@@ -25,7 +25,32 @@ public class DashboardsConfiguration {
         return items.get(name);
     }
 
+    void setFromJSONRAWString(String RawJSON) {
+        //todo: JSON - setFromJSONString(String JSON)
+        items.clear();
+
+        try {
+            JSONObject jsonObj = new JSONObject(RawJSON);
+            JSONArray dashboards = jsonObj.getJSONArray("dashboards");
+            Integer dashboardsCount = jsonObj.getJSONArray("dashboards").length();
+            for (Integer i=0; i<dashboardsCount; i++) {
+                Integer id;
+                String data = null;
+                JSONObject dashboard = dashboards.getJSONObject(i);
+                id = dashboard.getInt("id");
+                if (! dashboard.isNull("dashboard"))
+                  data = dashboard.getJSONArray("dashboard").toString();
+                items.put(id, data);
+            }
+        } catch (Exception e) {
+            android.util.Log.d("error", e.toString());
+        }
+
+    }
+
+    //todo: OLD!!!!!!!
     void setFromJSONString(String JSON) {
+        //todo: JSON - setFromJSONString(String JSON)
         items.clear();
         JsonReader jsonReader = new JsonReader(new StringReader(JSON));
         try {
@@ -61,19 +86,21 @@ public class DashboardsConfiguration {
 
     }
 
-    public String getAsJSONString(){
+    public JSONArray getAsJSON(){
+        //todo: JSON - getAsJSONString [OK]
         JSONArray dashboards = new JSONArray();
         for (TabData tabData: MainActivity.presenter.getTabs().getItems()) {
             JSONObject dashboard = new JSONObject();
             try {
                 dashboard.put("id", tabData.id.toString());
-                dashboard.put("dashboard", items.get(tabData.id));
+                JSONArray o2 = new JSONArray(items.get(tabData.id));
+                dashboard.put("dashboard", o2);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             dashboards.put(dashboard);
         }
-        return dashboards.toString();
+        return dashboards;
     }
 
 

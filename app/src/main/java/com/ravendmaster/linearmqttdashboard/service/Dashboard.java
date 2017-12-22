@@ -43,6 +43,7 @@ public class Dashboard {
 
     void saveDashboard(Context context) {
 
+        //todo: JSON SAVE FILE - generate items. begin quota overload 3.
         JSONArray ar = new JSONArray();
         for (WidgetData widget : mWidgets) {
             JSONObject resultJson = new JSONObject();
@@ -134,6 +135,7 @@ public class Dashboard {
 
                     WidgetData widget = new WidgetData();
 
+                    //todo: JSON - loadDashboard
                     jsonReader.beginObject();
                     while (jsonReader.hasNext()) {
                         String name = jsonReader.nextName();

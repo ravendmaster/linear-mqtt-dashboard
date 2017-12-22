@@ -12,9 +12,10 @@ import com.ravendmaster.linearmqttdashboard.customview.MyButton;
 import com.ravendmaster.linearmqttdashboard.customview.RGBLEDView;
 
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.UUID;
-
+import java.nio.charset.Charset;
 
 public class Utilites {
 
@@ -113,7 +114,30 @@ public class Utilites {
         return Math.round(input*1000f)/1000f;
     }
 
+/*
+https://stackoverflow.com/questions/88838/how-to-convert-strings-to-and-from-utf8-byte-arrays-in-java
+Convert from String to byte[]:
 
+String s = "some text here";
+byte[] b = s.getBytes("UTF-8");
+
+Convert from byte[] to String:
+
+byte[] b = {(byte) 99, (byte)97, (byte)116};
+String s = new String(b, "US-ASCII");
+ */
+
+    public static byte[] stringToBytesUTFCustom(String str) {
+        //return str.getBytes(StandardCharsets.UTF_8);
+        return str.getBytes();
+    }
+
+    public static String bytesToStringUTFCustom(byte[] bytes, int count) {
+        //return new String(bytes, StandardCharsets.UTF_8);
+        return new String(bytes);
+    }
+
+    /* Old code:
     public static byte[] stringToBytesUTFCustom(String str) {
 
         char[] buffer = str.toCharArray();
@@ -151,6 +175,7 @@ public class Utilites {
         return new String(buffer);
 
     }
+    */
 
 
     public static void xorBuffer(byte []buff){

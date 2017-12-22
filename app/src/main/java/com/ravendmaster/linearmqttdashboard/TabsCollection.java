@@ -37,8 +37,39 @@ public class TabsCollection {
         }
     }
 
+    public void setFromJSON(JsonReader jsonReader){
+        //todo: JSON - setFromJSONString
+        items.clear();
 
+        try {
+            jsonReader.beginArray();
+            while (jsonReader.hasNext()) {
+                TabData tabData = new TabData();
+                jsonReader.beginObject();
+                while (jsonReader.hasNext()) {
+                    String name = jsonReader.nextName();
+                    switch (name) {
+                        case "id":
+                            tabData.id = jsonReader.nextInt();
+                            break;
+                        case "name":
+                            tabData.name = jsonReader.nextString();
+                            break;
+                    }
+                }
+                jsonReader.endObject();
+                items.add(tabData);
+            }
+            jsonReader.endArray();
+        } catch (Exception e) {
+            android.util.Log.d("error", e.toString());
+        }
+
+    }
+
+    //TODO: OLD!!!!!!!!!!!!!!!
     public void setFromJSONString(String tabsJSON){
+        //todo: JSON - setFromJSONString
         items.clear();
         JsonReader jsonReader = new JsonReader(new StringReader(tabsJSON));
         try {
@@ -68,7 +99,8 @@ public class TabsCollection {
     }
 
 
-    public String getAsJSONString() {
+    public JSONArray getAsJSON() {
+        //todo: JSON - getAsJSON [OK]
         JSONArray ar = new JSONArray();
         for (TabData tab : items) {
             JSONObject resultJson = new JSONObject();
@@ -80,7 +112,7 @@ public class TabsCollection {
             }
             ar.put(resultJson);
         }
-        return ar.toString();
+        return ar;
     }
 
 
