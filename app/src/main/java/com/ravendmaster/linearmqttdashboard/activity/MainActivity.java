@@ -359,7 +359,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         File file = new File(path, "config.linear");
 
         try {
-            //todo: JSON SAVE - THE BEGIN!
             path.mkdirs();
             OutputStream os_ = new FileOutputStream(file);
             ZipOutputStream os = new ZipOutputStream(new BufferedOutputStream(os_));
@@ -765,7 +764,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
         if (action != null && action.equals("android.intent.action.VIEW")) {
             Uri data = intent.getData();
             try {
-                //todo: JSON - loading begin!!!
                 InputStream is_ = getContentResolver().openInputStream(data);
                 ZipInputStream is = new ZipInputStream(new BufferedInputStream(is_));
 
@@ -791,7 +789,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                     ad.setMessage("All settings (except password) will be replaced. Continue?"); // сообщение
                     ad.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int arg1) {
-                            //todo: JSON - loading main code
                             inputFileAlreadyPrecessed = true;
 
                             AppSettings settings = AppSettings.getInstance();

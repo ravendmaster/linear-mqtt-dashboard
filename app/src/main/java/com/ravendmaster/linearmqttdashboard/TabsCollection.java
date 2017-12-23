@@ -38,7 +38,6 @@ public class TabsCollection {
     }
 
     public void setFromJSON(JsonReader jsonReader){
-        //todo: JSON - setFromJSONString
         items.clear();
 
         try {
@@ -67,9 +66,8 @@ public class TabsCollection {
 
     }
 
-    //TODO: OLD!!!!!!!!!!!!!!!
+    //using in AppSettings.readFromPrefs
     public void setFromJSONString(String tabsJSON){
-        //todo: JSON - setFromJSONString
         items.clear();
         JsonReader jsonReader = new JsonReader(new StringReader(tabsJSON));
         try {
@@ -100,7 +98,6 @@ public class TabsCollection {
 
 
     public JSONArray getAsJSON() {
-        //todo: JSON - getAsJSON [OK]
         JSONArray ar = new JSONArray();
         for (TabData tab : items) {
             JSONObject resultJson = new JSONObject();

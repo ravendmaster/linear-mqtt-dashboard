@@ -196,7 +196,6 @@ public class AppSettings {
     }
 
     public void saveTabsSettingsToPrefs(Context con) {
-        //todo: JSON SAVE - save to prefs
         SharedPreferences sprefs = con.getSharedPreferences("mytabs", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sprefs.edit();
 
@@ -244,7 +243,6 @@ public class AppSettings {
 
         //AppSettings settings = AppSettings.getInstance();
 
-        //todo: JSON SAVE FILE
         JSONObject resultJson = new JSONObject();
 
         try {
@@ -261,11 +259,7 @@ public class AppSettings {
 
             resultJson.put("tabs", tabs.getAsJSON());
 
-
-            //todo: JSON SAVE FILE - begin quota overload
             resultJson.put("dashboards", dashboards.getAsJSON());
-
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

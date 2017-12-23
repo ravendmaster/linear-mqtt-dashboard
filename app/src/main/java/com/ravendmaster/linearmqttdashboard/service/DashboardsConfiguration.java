@@ -26,7 +26,6 @@ public class DashboardsConfiguration {
     }
 
     void setFromJSONRAWString(String RawJSON) {
-        //todo: JSON - setFromJSONString(String JSON)
         items.clear();
 
         try {
@@ -48,46 +47,7 @@ public class DashboardsConfiguration {
 
     }
 
-    //todo: OLD!!!!!!!
-    void setFromJSONString(String JSON) {
-        //todo: JSON - setFromJSONString(String JSON)
-        items.clear();
-        JsonReader jsonReader = new JsonReader(new StringReader(JSON));
-        try {
-            jsonReader.beginArray();
-            while (jsonReader.hasNext()) {
-
-                Integer id=null;
-                String data=null;
-
-                jsonReader.beginObject();
-                while (jsonReader.hasNext()) {
-                    String name = jsonReader.nextName();
-                    switch (name) {
-                        case "id":
-                            id = jsonReader.nextInt();
-                            break;
-                        case "dashboard":
-                            data = jsonReader.nextString();
-                            break;
-                    }
-                }
-                jsonReader.endObject();
-
-                items.put(id, data);
-                //}
-                //jsonReader.endObject();
-            }
-            jsonReader.endArray();
-
-        } catch (Exception e) {
-            android.util.Log.d("error", e.toString());
-        }
-
-    }
-
     public JSONArray getAsJSON(){
-        //todo: JSON - getAsJSONString [OK]
         JSONArray dashboards = new JSONArray();
         for (TabData tabData: MainActivity.presenter.getTabs().getItems()) {
             JSONObject dashboard = new JSONObject();
