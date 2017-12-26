@@ -29,24 +29,20 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <data
-                    android:scheme="file"
-                    android:mimeType="*/*"
-                    android:host="*"
-                    android:pathPattern=".*\\.linear"
-                    />
+                <data android:mimeType="application/linear"/>
+                <data android:scheme="http"    android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.linear"/>
+                <data android:scheme="https"   android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.linear"/>
+                <data android:scheme="content" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.linear"/>
+                <data android:scheme="file"    android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.linear" />
+                <data android:scheme="file"    android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\.linear" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data
-                    android:scheme="file"
-                    android:mimeType="*/*"
-                    android:host="*"
-                    android:pathPattern=".*\\..*\\.linear"
-                    />
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="application/linear"/>
+                <data android:scheme="content" android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.linear"/>
+                <data android:scheme="file"    android:host="*" android:mimeType="*/*" android:pathPattern=".*\\.linear" />
+                <data android:scheme="file"    android:host="*" android:mimeType="*/*" android:pathPattern=".*\\..*\\.linear" />
             </intent-filter>
 
         </activity>
