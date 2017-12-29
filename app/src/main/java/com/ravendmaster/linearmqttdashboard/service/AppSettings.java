@@ -14,7 +14,7 @@ import java.io.StringReader;
 public class AppSettings {
     private static AppSettings instance;
 
-    public int settingsVersion = 0;
+    public int settingsVersion = 1;
 
     public Boolean adfree;
 
@@ -199,7 +199,7 @@ public class AppSettings {
         SharedPreferences sprefs = con.getSharedPreferences("mytabs", Context.MODE_PRIVATE);
         SharedPreferences.Editor ed = sprefs.edit();
 
-        ed.putString("tabs", tabs.getAsJSONString());
+        ed.putString("tabs", tabs.getAsJSON().toString());
         if (!ed.commit()) {
             Log.d(getClass().getName(), "commit failure!!!");
         }
@@ -257,12 +257,9 @@ public class AppSettings {
             resultJson.put("connection_in_background", connection_in_background);
             resultJson.put("settingsVersion", settingsVersion);
 
-            resultJson.put("tabs", tabs.getAsJSONString());
+            resultJson.put("tabs", tabs.getAsJSON());
 
-
-            resultJson.put("dashboards", dashboards.getAsJSONString());
-
-
+            resultJson.put("dashboards", dashboards.getAsJSON());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -341,11 +338,13 @@ public class AppSettings {
                         break;
 
                     case "tabs":
-                        tabs.setFromJSONString(jsonReader.nextString());
+                        //see: https://developer.android.com/reference/android/util/JsonReader.html
+                        tabs.setFromJSON(jsonReader);
                         break;
 
                     case "dashboards":
-                        dashboards.setFromJSONString(jsonReader.nextString());
+                        jsonReader.skipValue();
+                        dashboards.setFromJSONRAWString(text);
                         break;
 
                     default:

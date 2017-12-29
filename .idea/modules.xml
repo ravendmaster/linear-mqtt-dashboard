@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://H:\Jav\linear-mqtt-dashboard\app\app.iml" filepath="H:\Jav\linear-mqtt-dashboard\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/linear-mqtt-dashboard.iml" filepath="$PROJECT_DIR$/linear-mqtt-dashboard.iml" />
     </modules>
   </component>

@@ -42,7 +42,6 @@ public class Dashboard {
     }
 
     void saveDashboard(Context context) {
-
         JSONArray ar = new JSONArray();
         for (WidgetData widget : mWidgets) {
             JSONObject resultJson = new JSONObject();
@@ -134,6 +133,7 @@ public class Dashboard {
 
                     WidgetData widget = new WidgetData();
 
+                    // load dashboard items:
                     jsonReader.beginObject();
                     while (jsonReader.hasNext()) {
                         String name = jsonReader.nextName();

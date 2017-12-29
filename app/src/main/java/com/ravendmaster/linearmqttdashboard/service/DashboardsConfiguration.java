@@ -25,55 +25,42 @@ public class DashboardsConfiguration {
         return items.get(name);
     }
 
-    void setFromJSONString(String JSON) {
+    void setFromJSONRAWString(String RawJSON) {
         items.clear();
-        JsonReader jsonReader = new JsonReader(new StringReader(JSON));
+
         try {
-            jsonReader.beginArray();
-            while (jsonReader.hasNext()) {
-
-                Integer id=null;
-                String data=null;
-
-                jsonReader.beginObject();
-                while (jsonReader.hasNext()) {
-                    String name = jsonReader.nextName();
-                    switch (name) {
-                        case "id":
-                            id = jsonReader.nextInt();
-                            break;
-                        case "dashboard":
-                            data = jsonReader.nextString();
-                            break;
-                    }
-                }
-                jsonReader.endObject();
-
+            JSONObject jsonObj = new JSONObject(RawJSON);
+            JSONArray dashboards = jsonObj.getJSONArray("dashboards");
+            Integer dashboardsCount = jsonObj.getJSONArray("dashboards").length();
+            for (Integer i=0; i<dashboardsCount; i++) {
+                Integer id;
+                String data = null;
+                JSONObject dashboard = dashboards.getJSONObject(i);
+                id = dashboard.getInt("id");
+                if (! dashboard.isNull("dashboard"))
+                  data = dashboard.getJSONArray("dashboard").toString();
                 items.put(id, data);
-                //}
-                //jsonReader.endObject();
             }
-            jsonReader.endArray();
-
         } catch (Exception e) {
             android.util.Log.d("error", e.toString());
         }
 
     }
 
-    public String getAsJSONString(){
+    public JSONArray getAsJSON(){
         JSONArray dashboards = new JSONArray();
         for (TabData tabData: MainActivity.presenter.getTabs().getItems()) {
             JSONObject dashboard = new JSONObject();
             try {
                 dashboard.put("id", tabData.id.toString());
-                dashboard.put("dashboard", items.get(tabData.id));
+                JSONArray o2 = new JSONArray(items.get(tabData.id));
+                dashboard.put("dashboard", o2);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             dashboards.put(dashboard);
         }
-        return dashboards.toString();
+        return dashboards;
     }
 
 

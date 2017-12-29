@@ -37,7 +37,36 @@ public class TabsCollection {
         }
     }
 
+    public void setFromJSON(JsonReader jsonReader){
+        items.clear();
 
+        try {
+            jsonReader.beginArray();
+            while (jsonReader.hasNext()) {
+                TabData tabData = new TabData();
+                jsonReader.beginObject();
+                while (jsonReader.hasNext()) {
+                    String name = jsonReader.nextName();
+                    switch (name) {
+                        case "id":
+                            tabData.id = jsonReader.nextInt();
+                            break;
+                        case "name":
+                            tabData.name = jsonReader.nextString();
+                            break;
+                    }
+                }
+                jsonReader.endObject();
+                items.add(tabData);
+            }
+            jsonReader.endArray();
+        } catch (Exception e) {
+            android.util.Log.d("error", e.toString());
+        }
+
+    }
+
+    //using in AppSettings.readFromPrefs
     public void setFromJSONString(String tabsJSON){
         items.clear();
         JsonReader jsonReader = new JsonReader(new StringReader(tabsJSON));
@@ -68,7 +97,7 @@ public class TabsCollection {
     }
 
 
-    public String getAsJSONString() {
+    public JSONArray getAsJSON() {
         JSONArray ar = new JSONArray();
         for (TabData tab : items) {
             JSONObject resultJson = new JSONObject();
@@ -80,7 +109,7 @@ public class TabsCollection {
             }
             ar.put(resultJson);
         }
-        return ar.toString();
+        return ar;
     }
 
 

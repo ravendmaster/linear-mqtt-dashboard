@@ -364,7 +364,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
             ZipOutputStream os = new ZipOutputStream(new BufferedOutputStream(os_));
 
             String allSettings = AppSettings.getInstance().getSettingsAsString();
-            os.putNextEntry(new ZipEntry("settings"));
+            os.putNextEntry(new ZipEntry("settings.json"));
             buff = Utilites.stringToBytesUTFCustom(allSettings);
             os.flush();
             os.write(buff);
@@ -768,6 +768,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                 ZipInputStream is = new ZipInputStream(new BufferedInputStream(is_));
 
                 ZipEntry entry;
+                //todo: перемалываем все файлы из архива - я думаю это неправильно...
                 while ((entry = is.getNextEntry()) != null) {
 
                     ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -782,7 +783,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLongClickL
                     os.close();
 
                     result = Utilites.bytesToStringUTFCustom(os.toByteArray(), os.toByteArray().length);
-
 
                     AlertDialog.Builder ad = new AlertDialog.Builder(this);
                     ad.setTitle("Import settings");  // заголовок
