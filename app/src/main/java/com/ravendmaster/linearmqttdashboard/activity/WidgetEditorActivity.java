@@ -418,6 +418,7 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
                         valueFieldName = getString(R.string.value_on);
                         publishValue2Visible = View.VISIBLE;
                         value2FieldName = getString(R.string.value_off);
+                        retainedVisible = View.VISIBLE;
                         break;
                     case RGBLed:
                         primaryColorVisible = View.VISIBLE;

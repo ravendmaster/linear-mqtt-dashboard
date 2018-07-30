@@ -605,7 +605,7 @@ public class Presenter {
         Switch widget_switch = (Switch) view;
         String newValue = widget_switch.isChecked() ? widget.publishValue : widget.publishValue2;
 
-        publishMQTTMessage(getTopicForPublishValue(widget), new Buffer(newValue.getBytes()), true);
+        publishMQTTMessage(getTopicForPublishValue(widget), new Buffer(newValue.getBytes()), widget.retained);
     }
     //switch
 
