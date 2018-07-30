@@ -468,7 +468,7 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
 
 
                 sub_topic_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER ? View.GONE : View.VISIBLE);
-                pub_topic_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER || widgetType == WidgetData.WidgetTypes.GRAPH || widgetType == WidgetData.WidgetTypes.RGBLed || widgetType == WidgetData.WidgetTypes.SLIDER  ? View.GONE : View.VISIBLE);
+                pub_topic_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER || widgetType == WidgetData.WidgetTypes.GRAPH || widgetType == WidgetData.WidgetTypes.RGBLed ? View.GONE : View.VISIBLE);
                 on_receive_codes_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER ? View.GONE : View.VISIBLE);
 
                 spinner_widget_mode.setVisibility(modeVisibility);

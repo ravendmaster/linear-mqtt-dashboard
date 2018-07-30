@@ -506,7 +506,7 @@ public class Presenter {
         mDelayedPublishValueHandler.removeMessages(0);
 
         SendMessagePack pack = new SendMessagePack();
-        pack.topic = widget.getSubTopic(0);
+        pack.topic = getTopicForPublishValue(widget);
         pack.value = currentInteractiveValue;
         pack.retained = true;
 
