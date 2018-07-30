@@ -408,6 +408,7 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
 
                         displayAsDecimalVisibleVisible = View.VISIBLE;
                         codesGroupVisible = View.VISIBLE;
+                        retainedVisible = View.VISIBLE;
 
                         break;
                     case SWITCH:

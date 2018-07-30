@@ -508,7 +508,7 @@ public class Presenter {
         SendMessagePack pack = new SendMessagePack();
         pack.topic = getTopicForPublishValue(widget);
         pack.value = currentInteractiveValue;
-        pack.retained = true;
+        pack.retained = widget.retained;
 
 
         Message msg = new Message();
