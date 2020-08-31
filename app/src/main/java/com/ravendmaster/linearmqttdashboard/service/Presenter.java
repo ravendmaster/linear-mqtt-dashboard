@@ -506,9 +506,9 @@ public class Presenter {
         mDelayedPublishValueHandler.removeMessages(0);
 
         SendMessagePack pack = new SendMessagePack();
-        pack.topic = widget.getSubTopic(0);
+        pack.topic = getTopicForPublishValue(widget);
         pack.value = currentInteractiveValue;
-        pack.retained = true;
+        pack.retained = widget.retained;
 
 
         Message msg = new Message();
@@ -605,7 +605,7 @@ public class Presenter {
         Switch widget_switch = (Switch) view;
         String newValue = widget_switch.isChecked() ? widget.publishValue : widget.publishValue2;
 
-        publishMQTTMessage(getTopicForPublishValue(widget), new Buffer(newValue.getBytes()), true);
+        publishMQTTMessage(getTopicForPublishValue(widget), new Buffer(newValue.getBytes()), widget.retained);
     }
     //switch
 

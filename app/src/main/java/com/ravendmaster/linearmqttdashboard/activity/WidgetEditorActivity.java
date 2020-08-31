@@ -408,6 +408,7 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
 
                         displayAsDecimalVisibleVisible = View.VISIBLE;
                         codesGroupVisible = View.VISIBLE;
+                        retainedVisible = View.VISIBLE;
 
                         break;
                     case SWITCH:
@@ -418,6 +419,7 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
                         valueFieldName = getString(R.string.value_on);
                         publishValue2Visible = View.VISIBLE;
                         value2FieldName = getString(R.string.value_off);
+                        retainedVisible = View.VISIBLE;
                         break;
                     case RGBLed:
                         primaryColorVisible = View.VISIBLE;
@@ -467,7 +469,7 @@ public class WidgetEditorActivity extends AppCompatActivity implements View.OnCl
 
 
                 sub_topic_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER ? View.GONE : View.VISIBLE);
-                pub_topic_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER || widgetType == WidgetData.WidgetTypes.GRAPH || widgetType == WidgetData.WidgetTypes.RGBLed || widgetType == WidgetData.WidgetTypes.SLIDER  ? View.GONE : View.VISIBLE);
+                pub_topic_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER || widgetType == WidgetData.WidgetTypes.GRAPH || widgetType == WidgetData.WidgetTypes.RGBLed ? View.GONE : View.VISIBLE);
                 on_receive_codes_group.setVisibility(widgetType == WidgetData.WidgetTypes.HEADER ? View.GONE : View.VISIBLE);
 
                 spinner_widget_mode.setVisibility(modeVisibility);
